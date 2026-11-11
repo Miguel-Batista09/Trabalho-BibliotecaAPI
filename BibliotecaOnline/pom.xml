@@ -30,12 +30,10 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!-- Lombok: reduz codigo boilerplate (anotacao @Data nos DTOs) -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
+        <!-- Lombok REMOVIDO do projeto: o erro "java.lang.ExceptionInInitializerError
+             com.sun.tools.javac.code.TypeTag :: UNKNOWN" ocorre quando a versao do
+             Lombok nao e compativel com o JDK usado pelo compilador do Eclipse/VS Code.
+             O LivroDTO agora possui getters/setters manuais, como no roteiro da aula. -->
 
         <!-- Testes (opcional) -->
         <dependency>
@@ -52,14 +50,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
-                </configuration>
             </plugin>
         </plugins>
     </build>

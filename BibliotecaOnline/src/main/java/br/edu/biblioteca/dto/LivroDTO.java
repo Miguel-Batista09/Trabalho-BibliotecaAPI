@@ -3,7 +3,6 @@ package br.edu.biblioteca.dto;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
 
 /**
  * Data Transfer Object (DTO) baseado na classe Livro do domínio.
@@ -18,7 +17,6 @@ import lombok.Data;
  * @JsonIgnoreProperties para ignorar o "userId" (que não faz parte do
  * domínio) sem quebrar a desserialização do JSON.
  */
-@Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LivroDTO {
 
@@ -39,4 +37,25 @@ public class LivroDTO {
     @JsonProperty(value = "body", required = false)
     @JsonAlias("descricao")
     private String descricao;
+
+    // Getters e Setters escritos manualmente (sem Lombok), exatamente como
+    // previsto no roteiro da aula — evita erro de compilação no Eclipse/VS Code
+    // quando o processador de anotações do Lombok não está habilitado.
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public String getTitulo() { return titulo; }
+    public void setTitulo(String titulo) { this.titulo = titulo; }
+
+    public String getAutor() { return autor; }
+    public void setAutor(String autor) { this.autor = autor; }
+
+    public String getCategoria() { return categoria; }
+    public void setCategoria(String categoria) { this.categoria = categoria; }
+
+    public Integer getAnoPublicacao() { return anoPublicacao; }
+    public void setAnoPublicacao(Integer anoPublicacao) { this.anoPublicacao = anoPublicacao; }
+
+    public String getDescricao() { return descricao; }
+    public void setDescricao(String descricao) { this.descricao = descricao; }
 }
