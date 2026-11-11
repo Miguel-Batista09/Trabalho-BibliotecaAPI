@@ -1,0 +1,51 @@
+$kind: http-request
+name: 'POST Criar Livro'
+method: POST
+url: '{{base_url}}/api/integracao/livros'
+order: 2000
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "titulo": "O Senhor dos Anéis",
+      "autor": "J.R.R. Tolkien",
+      "categoria": "Fantasia",
+      "anoPublicacao": 1954,
+      "descricao": "Uma épica jornada pela Terra Média."
+    }
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status code is 201", function () {
+          pm.response.to.have.status(201);
+      });
+
+      pm.test("Response is a JSON object", function () {
+          const json = pm.response.json();
+          pm.expect(json).to.be.an('object');
+      });
+
+      pm.test("Response contains an id", function () {
+          const json = pm.response.json();
+          pm.expect(json).to.have.property('id');
+          pm.expect(json.id).to.be.a('number');
+      });
+
+      pm.test("Response contains title", function () {
+          const json = pm.response.json();
+          pm.expect(json).to.have.property('title');
+      });
+
+      pm.test("Response title matches the sent titulo", function () {
+          const sentBody = JSON.parse(pm.request.body.raw);
+          const json = pm.response.json();
+          // The server maps 'titulo' (alias) → 'title' in the response
+          pm.expect(json.title).to.eql(sentBody.titulo);
+      });
+
+      pm.test("Response time is under 3000ms", function () {
+          pm.expect(pm.response.responseTime).to.be.below(3000);
+      });

@@ -1,0 +1,34 @@
+$kind: http-request
+name: 'GET Listar Livros'
+method: GET
+url: '{{base_url}}/api/integracao/livros'
+order: 1000
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status code is 200", function () {
+          pm.response.to.have.status(200);
+      });
+
+      pm.test("Response is a JSON array", function () {
+          const json = pm.response.json();
+          pm.expect(json).to.be.an('array');
+      });
+
+      pm.test("Array contains at least one book", function () {
+          const json = pm.response.json();
+          pm.expect(json.length).to.be.greaterThan(0);
+      });
+
+      pm.test("Each book has id and title", function () {
+          const json = pm.response.json();
+          json.forEach(function (livro) {
+              pm.expect(livro).to.have.property('id');
+              pm.expect(livro).to.have.property('title');
+          });
+      });
+
+      pm.test("Response time is under 3000ms", function () {
+          pm.expect(pm.response.responseTime).to.be.below(3000);
+      });
